@@ -4,10 +4,6 @@
 
 ## Description
 
-Assuming you have generated
-Running the script will bring up a wizard to fill in the config for fetching the assets. You can also provide the colors-config.json yourself, then the wizard is skipped.
-After the config is provided, the figma file is fetched and parsed to find the icons frame, the files are downloaded and put locally in the directory provided in the config.
-
 example config file:
 
 ```json
@@ -31,13 +27,13 @@ example config file:
 Install the cli globally so you can use it on any directory
 
 ```sh
-npm install -g figma-export-icons
+npm install -g figma-export-colors
 ```
 
 Or if you prefer install it in your project
 
 ```sh
-npm install figma-export-icons --save
+npm install figma-export-colors --save
 ```
 
 ## Usage
@@ -45,7 +41,7 @@ npm install figma-export-icons --save
 If you have installed the module globally:
 
 ```sh
-$ export-icons
+$ export-colors
 ```
 
 If you have installed it locally:
@@ -54,14 +50,14 @@ Create a script in your package.json
 
 ```js
 scripts: {
- 'export-icons': 'export-icons'
+ 'export-colors': 'export-colors'
 }
 ```
 
 and run
 
 ```sh
-npm run export-icons
+npm run export-colors
 ```
 
 OR
@@ -69,7 +65,7 @@ OR
 run it directly with:
 
 ```sh
-npx export-icons
+npx export-colors
 ```
 
 ## Credits
