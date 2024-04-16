@@ -1,6 +1,6 @@
 {
   "name": "figma-export-colors",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "Script to generate a colors object for use in a tailwind config file from a figma.",
   "bin": {
     "export-colors": "cli.js"
@@ -15,7 +15,8 @@
   "keywords": [
     "cli",
     "figma",
-    "figma-api"
+    "figma-api",
+    "Tailwind CSS Color Generator"
   ],
   "author": "Kevin Lobine",
   "license": "MIT",

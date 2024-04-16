@@ -33,7 +33,7 @@ npm install -g figma-export-colors
 Or if you prefer install it in your project
 
 ```sh
-npm install figma-export-colors --save
+npm install -D figma-export-colors
 ```
 
 ## Usage
