@@ -1,0 +1,35 @@
+{
+  "name": "figma-export-colors",
+  "version": "0.1.0",
+  "description": "Script to generate a colors object for use in a tailwind config file from a figma.",
+  "bin": {
+    "export-colors": "cli.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tiersept/figma-export-colors.git"
+  },
+  "keywords": [
+    "cli",
+    "figma",
+    "figma-api"
+  ],
+  "author": "Kevin Lobine",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tiersept/figma-export-colors/issues"
+  },
+  "homepage": "https://github.com/tiersept/figma-export-colors#readme",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "chalk": "^2.4.2",
+    "cliui": "^5.0.0",
+    "minimist": "^1.2.5",
+    "mkdirp": "^0.5.1",
+    "ora": "^3.4.0",
+    "prompts": "^2.1.0"
+  }
+}
