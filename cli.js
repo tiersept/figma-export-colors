@@ -7,7 +7,6 @@ const path = require("path");
 const ora = require("ora");
 const chalk = require("chalk");
 const ui = require("cliui")({ width: 80 });
-const axios = require("axios");
 const prompts = require("prompts");
 const promptsList = require("./src/prompts");
 const mkdirp = require("mkdirp");
@@ -240,65 +239,58 @@ function getFigmaFile() {
   });
 }
 
-function makeRow(a, b) {
-  return `  ${a}\t    ${b}\t`;
+function makeRow(key, value) {
+  return `  ${chalk.cyan.bold(key)}\t    ${chalk.green(value)}\t`;
 }
 
-function makeResultsTable(results) {
-  ui.div(
-    makeRow(chalk.cyan.bold(`File`), chalk.cyan.bold(`Size`)) +
-      `\n\n` +
-      results
-        .map((asset) =>
-          makeRow(
-            asset.name.includes("-duplicate-name")
-              ? chalk.red.bold(asset.name)
-              : chalk.green(asset.name),
-            formatSize(asset.size)
-          )
-        )
-        .join(`\n`)
-  );
-  return ui.toString();
+function makeResultsTable(colorsObject) {
+  const entries = Object.entries(colorsObject)
+    .map(([key, values]) => {
+      return Object.entries(values)
+        .map(([subKey, color]) => {
+          return makeRow(`${key} - ${subKey}`, color);
+        })
+        .join(`\n`);
+    })
+    .join(`\n`);
+
+  ui.div(makeRow("Name - Key", "Value") + `\n\n` + entries);
+
+  console.log(ui.toString());
 }
 
 function exportColors() {
   getFigmaFile().then((res) => {
-    const colorsObject = res
-      .map((colorGroup) => ({
-        [colorGroup.name.toLowerCase()]: colorGroup.children
-          .map((child) => {
-            const color = child.children.find(
-              (childColor) =>
-                childColor.type === "TEXT" && childColor.name.startsWith("#")
-            )?.name;
+    const colorsObject = res.reduce((finalObject, colorGroup) => {
+      const groupKey = colorGroup.name.toLowerCase();
+      const groupValues = colorGroup.children.reduce((groupObj, child) => {
+        const color = child.children.find(
+          (childColor) =>
+            childColor.type === "TEXT" && childColor.name.startsWith("#")
+        )?.name;
+        const key = child.children.find(
+          (childColor) =>
+            childColor.type === "TEXT" && !childColor.name.startsWith("#")
+        )?.name;
 
-            const key = child.children.find(
-              (childColor) =>
-                childColor.type === "TEXT" &&
-                !childColor.name.startsWith("#")?.name
-            )?.name;
+        if (key) {
+          const numericalKey = Number(key);
+          groupObj[isNaN(numericalKey) ? key : numericalKey] = color;
+        }
 
-            return { [key]: color };
-          })
-          .reduce((obj, item) => {
-            const [key, value] = Object.entries(item)[0];
-            const keyOfValue = Number(key);
-            obj[isNaN(keyOfValue) ? key : keyOfValue] = value;
-
-            return obj;
-          }, {}),
-      }))
-      .reduce((acc, obj) => {
-        const [[key, value]] = Object.entries(obj);
-        return { ...acc, [key]: value };
+        return groupObj;
       }, {});
+
+      finalObject[groupKey] = groupValues;
+      return finalObject;
+    }, {});
 
     createOutputDirectory().then(() => {
       deleteFiles().then(() => {
         spinner.start("Creating colors file");
         createColorsFile(colorsObject).then(() => {
           spinner.succeed(chalk.cyan.bold("Done!\n"));
+          makeResultsTable(colorsObject);
         });
       });
     });

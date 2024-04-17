@@ -1,6 +1,9 @@
 # figma-export-colors
 
-> Command line script to generate a `.js` or `.ts` colors object from the generated colors using [tailwind-css-color-generator](https://www.figma.com/community/plugin/1242548152689430610/tailwind-css-color-generator) that you can spread in your `tailwind.config` file.
+<a href="https://www.npmjs.com/package/figma-export-colors"><img src="https://badgen.net/npm/v/figma-export-colors" alt="Version"></a>
+<a href="https://www.npmjs.com/package/figma-export-colors"><img src="https://badgen.net/npm/dm/figma-export-colors" alt="Downloads"></a>
+
+Command line script to generate a `.js` or `.ts` colors object from the generated colors using [tailwind-css-color-generator](https://www.figma.com/community/plugin/1242548152689430610/tailwind-css-color-generator) that you can spread in your `tailwind.config` file.
 
 ## Description
 
