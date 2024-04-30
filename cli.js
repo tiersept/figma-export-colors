@@ -240,12 +240,16 @@ function getFigmaFile() {
 }
 
 function makeRow(key, value) {
-  return `  ${chalk.cyan.bold(key)}\t    ${chalk.green(value)}\t`;
+  return `${chalk.cyan.bold(key)}\t    ${chalk.green(value)}\t`;
 }
 
 function makeResultsTable(colorsObject) {
   const entries = Object.entries(colorsObject)
     .map(([key, values]) => {
+      if (typeof values !== "object") {
+        return makeRow(key, values);
+      }
+
       return Object.entries(values)
         .map(([subKey, color]) => {
           return makeRow(`${key} - ${subKey}`, color);
@@ -273,12 +277,19 @@ function exportColors() {
             childColor.type === "TEXT" && !childColor.name.startsWith("#")
         )?.name;
 
+        /**
+         * For nested colors
+         */
         if (key) {
           const numericalKey = Number(key);
           groupObj[isNaN(numericalKey) ? key : numericalKey] = color;
+          return groupObj;
         }
 
-        return groupObj;
+        /**
+         * For not nested colors
+         */
+        return color;
       }, {});
 
       finalObject[groupKey] = groupValues;
