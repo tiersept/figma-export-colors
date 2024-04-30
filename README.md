@@ -71,6 +71,44 @@ run it directly with:
 npx export-colors
 ```
 
+## Example of an exported file as colors.js/ts
+
+```js
+export const colors = {
+  black: "#000000",
+  white: "#ffffff",
+  yellow: {
+    50: "#fdffe7",
+    100: "#f9ffc1",
+    200: "#f8ff86",
+    ...
+  },
+  purple: {
+    50: "#f3f3ff",
+    100: "#eae9fe",
+    200: "#d8d6fe",
+    ...
+  },
+  ...
+};
+```
+
+## In your tailwind.config you spread the exported colors object
+
+```js
+import { colors } from "./constants/colors";
+
+const config = {
+  theme: {
+    colors: {
+      current: "currentColor",
+      transparent: "transparent",
+      ...colors,
+    },
+  },
+};
+```
+
 ## Credits
 
 This script was inspired by https://github.com/tsimenis/figma-export-icons and to use with the figma plugin https://www.figma.com/community/plugin/1242548152689430610/tailwind-css-color-generator
