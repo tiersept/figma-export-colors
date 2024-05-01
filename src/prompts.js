@@ -22,13 +22,13 @@ const prompts = [
   {
     type: "text",
     name: "page",
-    message: "Name of the page with icons?",
+    message: "Name of the page with colors?",
     initial: defaults.page,
   },
   {
     type: "text",
     name: "frame",
-    message: "Name of the frame with icons",
+    message: "Name of the frame with colors",
     initial: defaults.frame,
   },
   {
