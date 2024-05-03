@@ -1,6 +1,6 @@
 {
   "name": "figma-export-colors",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "description": "Script to generate a colors object for use in a tailwind config file from a figma.",
   "bin": {
     "export-colors": "cli.js"
