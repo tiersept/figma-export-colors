@@ -3,7 +3,7 @@ const defaults = {
   configFileName: "figma-export-config.json",
   colorsPage: "Color",
   colorsFrame: "Colors",
-  colorsExportPath: "constants",
+  colorsExportDirectory: "constants",
   colorsExportFileName: "colors",
 };
 

@@ -66,12 +66,12 @@ async function getPromptData(list = promptsList) {
 
 function createOutputDirectory() {
   return new Promise((resolve) => {
-    const directory = path.resolve(config.colorsExportPath);
+    const directory = path.resolve(config.colorsExportDirectory);
 
     if (!fs.existsSync(directory)) {
-      console.error(`Directory ${config.colorsExportPath} does not exist`);
+      console.error(`Directory ${config.colorsExportDirectory} does not exist`);
       if (mkdirp.sync(directory)) {
-        console.info(`Created directory ${config.colorsExportPath}`);
+        console.info(`Created directory ${config.colorsExportDirectory}`);
         resolve();
       }
     } else {
@@ -89,7 +89,7 @@ function createColorsFile(colorsObject) {
     )};\n`;
 
     fs.writeFile(
-      `${config.colorsExportPath}/${config.colorsExportFileName}.${
+      `${config.colorsExportDirectory}/${config.colorsExportFileName}.${
         config.typescript ? "ts" : "js"
       }`,
       content,
@@ -116,7 +116,7 @@ function deleteFile(path) {
 
 function deletePreviousFile() {
   return new Promise((resolve) => {
-    const directory = path.resolve(config.colorsExportPath);
+    const directory = path.resolve(config.colorsExportDirectory);
 
     const filePath = path.join(
       directory,

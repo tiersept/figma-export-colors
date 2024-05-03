@@ -33,9 +33,9 @@ const prompts = [
   },
   {
     type: "text",
-    name: "colorsExportPath",
+    name: "colorsExportDirectory",
     message: "Directory to generate colors file to",
-    initial: defaults.colorsExportPath,
+    initial: defaults.colorsExportDirectory,
   },
   {
     type: "text",
