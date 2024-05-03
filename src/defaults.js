@@ -1,9 +1,10 @@
 const defaults = {
-  configFileName: "colors-config.json",
-  page: "Color",
-  frame: "Colors",
-  exportPath: "constants",
   typescript: true,
+  configFileName: "figma-export-config.json",
+  colorsPage: "Color",
+  colorsFrame: "Colors",
+  colorsExportPath: "constants",
+  colorsExportFileName: "colors",
 };
 
 module.exports = defaults;

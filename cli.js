@@ -19,7 +19,7 @@ function deleteConfig() {
   const configFile = path.resolve(defaults.configFileName);
   if (fs.existsSync(configFile)) {
     fs.unlinkSync(configFile);
-    console.log(chalk.cyan.bold("Deleted previous config"));
+    console.info(chalk.cyan.bold("Deleted previous config"));
   }
 }
 
@@ -28,13 +28,13 @@ function updateGitIgnore() {
   const configPath = argv.config || defaults.configFileName;
   const ignoreCompletePath = path.resolve(ignorePath);
   if (fs.existsSync(configPath)) {
-    const ignoreContent = `\n#figma-export-colors\n${configPath}`;
+    const ignoreContent = `\n#figma-export-config\n${configPath}`;
     const ignore = fs.existsSync(ignoreCompletePath)
       ? fs.readFileSync(ignoreCompletePath, "utf-8")
       : "";
     if (!ignore.includes(ignoreContent)) {
       fs.writeFileSync(ignoreCompletePath, ignore + ignoreContent);
-      console.log(`Updated ${ignorePath} : ${ignoreContent}`);
+      console.info(`Updated ${ignorePath} : ${ignoreContent}`);
     }
   }
 }
@@ -55,22 +55,23 @@ function getConfig() {
 }
 
 async function getPromptData(list = promptsList) {
-  const onCancel = (prompt) => {
+  const onCancel = () => {
     process.exit(1);
   };
 
   const response = await prompts(list, { onCancel });
   config = Object.assign(config, response);
-  fs.writeFileSync("colors-config.json", JSON.stringify(config, null, 2));
+  fs.writeFileSync(defaults.configFileName, JSON.stringify(config, null, 2));
 }
 
 function createOutputDirectory() {
   return new Promise((resolve) => {
-    const directory = path.resolve(config.exportPath);
+    const directory = path.resolve(config.colorsExportPath);
+
     if (!fs.existsSync(directory)) {
-      console.log(`Directory ${config.exportPath} does not exist`);
+      console.error(`Directory ${config.colorsExportPath} does not exist`);
       if (mkdirp.sync(directory)) {
-        console.log(`Created directory ${config.exportPath}`);
+        console.info(`Created directory ${config.colorsExportPath}`);
         resolve();
       }
     } else {
@@ -88,7 +89,9 @@ function createColorsFile(colorsObject) {
     )};\n`;
 
     fs.writeFile(
-      `${config.exportPath}/colors.${config.typescript ? "ts" : "js"}`,
+      `${config.colorsExportPath}/${config.colorsExportFileName}.${
+        config.typescript ? "ts" : "js"
+      }`,
       content,
       (err) => {
         if (err) throw err;
@@ -100,58 +103,39 @@ function createColorsFile(colorsObject) {
 }
 
 function deleteFile(path) {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     fs.unlink(path, (err) => {
-      if (err) throw err;
+      if (err) {
+        throw err;
+      }
       // if no error, file has been deleted successfully
       resolve();
     });
   });
 }
 
-function deleteDirectory(directory) {
+function deletePreviousFile() {
   return new Promise((resolve) => {
-    fs.rmdir(directory, (err) => {
-      if (err) throw err;
-      resolve();
-    });
-  });
-}
+    const directory = path.resolve(config.colorsExportPath);
 
-function deleteFiles() {
-  return new Promise((resolve) => {
-    const directory = path.resolve(config.exportPath);
-    // read files in directory
-    fs.readdir(directory, (err, files) => {
-      if (err) throw err;
-      spinner.start("Deleting directory contents");
-      let filesToDelete = [];
-      let subdirectories = [];
-      files.forEach((file) => {
-        const hasSubdirectory = fs
-          .lstatSync(path.join(directory, file))
-          .isDirectory();
-        if (hasSubdirectory) {
-          const subdirectory = path.join(directory, file);
-          subdirectories.push(subdirectory);
-          // read subdirectory
-          fs.readdir(subdirectory, (err, files) => {
-            if (err) throw err;
-            files.forEach((file) =>
-              filesToDelete.push(deleteFile(path.join(subdirectory, file)))
-            );
-          });
-        }
-      });
-      Promise.all(filesToDelete).then(() => {
-        const directoriesToDelete = subdirectories.map((subdirectory) =>
-          deleteDirectory(subdirectory)
-        );
-        Promise.all(directoriesToDelete).then(() => {
-          spinner.succeed();
-          resolve();
-        });
-      });
+    const filePath = path.join(
+      directory,
+      `${config.colorsExportFileName}.${config.typescript ? "ts" : "js"}`
+    );
+
+    if (!fs.existsSync(filePath)) {
+      console.info(chalk.cyan.bold("No colors file found."));
+
+      resolve();
+
+      return;
+    }
+
+    spinner.start("Deleting previous color file.");
+
+    deleteFile(filePath).then(() => {
+      spinner.succeed();
+      resolve();
     });
   });
 }
@@ -178,35 +162,35 @@ function getFigmaFile() {
       .then((res) => {
         const endTime = new Date().getTime();
         spinner.succeed();
-        console.log(
+        console.info(
           chalk.cyan.bold(
             `Finished in ${(endTime - res.config.startTime) / 1000}s\n`
           )
         );
 
         const page = res.data.document.children.find(
-          (c) => c.name === config.page
+          (c) => c.name === config.colorsPage
         );
 
         if (!page) {
-          console.log(
+          console.info(
             chalk.red.bold("Cannot find Colors page, check your settings")
           );
           return;
         }
 
         const shouldGetFrame =
-          isNaN(config.frame) && parseInt(config.frame) !== -1;
+          isNaN(config.colorsFrame) && parseInt(config.colorsFrame) !== -1;
 
         let pageChildren = page.children;
 
         if (shouldGetFrame) {
-          const frameNameArr = config.frame.split("/").filter(Boolean);
+          const frameNameArr = config.colorsFrame.split("/").filter(Boolean);
           const frameName = frameNameArr.pop();
           const frameRoot = getPathToFrame(page, frameNameArr);
 
           if (!frameRoot.children.find((c) => c.name === frameName)) {
-            console.log(
+            console.info(
               chalk.red.bold(
                 "Cannot find",
                 chalk.white.bgRed(frameName),
@@ -226,13 +210,13 @@ function getFigmaFile() {
       .catch((err) => {
         spinner.fail();
         if (err.response) {
-          console.log(
+          console.info(
             chalk.red.bold(
               `Cannot get Figma file: ${err.response.data.status} ${err.response.data.err}`
             )
           );
         } else {
-          console.log(err);
+          console.info(err);
         }
         process.exit(1);
       });
@@ -258,9 +242,9 @@ function makeResultsTable(colorsObject) {
     })
     .join(`\n`);
 
-  ui.div(makeRow("Name - Key", "Value") + `\n\n` + entries);
+  ui.div(makeRow(`\n\n` + "Name - Key", "Value") + `\n\n` + entries);
 
-  console.log(ui.toString());
+  console.info(ui.toString());
 }
 
 function exportColors() {
@@ -297,11 +281,11 @@ function exportColors() {
     }, {});
 
     createOutputDirectory().then(() => {
-      deleteFiles().then(() => {
+      deletePreviousFile().then(() => {
         spinner.start("Creating colors file");
         createColorsFile(colorsObject).then(() => {
-          spinner.succeed(chalk.cyan.bold("Done!\n"));
           makeResultsTable(colorsObject);
+          spinner.succeed(chalk.cyan.bold("Export colors done!\n"));
         });
       });
     });

@@ -3,5 +3,5 @@
 node_modules
 .env
 
-#figma-export-colors
-colors-config.json
+#figma-export-config
+figma-export-config.json
