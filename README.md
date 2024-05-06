@@ -45,6 +45,8 @@ npm install -D figma-export-colors
 
 ## Usage
 
+> Make sure you wrap the colors defined in figma in a named frame that matches the name that you defined in the config as the value of the `colorsFrame` key property.
+
 If you have installed the module globally:
 
 ```sh
