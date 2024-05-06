@@ -13,9 +13,10 @@ example config file:
 {
   "figmaPersonalToken": "YOUR_PERSONAL_TOKEN",
   "fileId": "FILE_ID",
-  "page": "Color",
-  "frame": "Colors",
-  "exportPath": "constants/colors",
+  "colorsPage": "Colors",
+  "colorsFrame": "colors",
+  "colorsExportDirectory": "constants",
+  "colorsExportFileName": "colors",
   "typescript": true
 }
 ```
@@ -40,6 +41,8 @@ npm install -D figma-export-colors
 ```
 
 ## Usage
+
+> Make sure you wrap the colors defined in figma in a named frame that matches the name that you defined in the config as the value of the `colorsFrame` key property.
 
 If you have installed the module globally:
 
