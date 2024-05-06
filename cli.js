@@ -27,6 +27,7 @@ function updateGitIgnore() {
   const ignorePath = ".gitignore";
   const configPath = argv.config || defaults.configFileName;
   const ignoreCompletePath = path.resolve(ignorePath);
+
   if (fs.existsSync(configPath)) {
     const ignoreContent = `\n#figma-export-config\n${configPath}`;
     const ignore = fs.existsSync(ignoreCompletePath)
@@ -42,12 +43,20 @@ function updateGitIgnore() {
 function getConfig() {
   return new Promise((resolve) => {
     const configFile = path.resolve(argv.config || defaults.configFileName);
+
     if (fs.existsSync(configFile)) {
       config = JSON.parse(fs.readFileSync(configFile, "utf-8"));
-      const missingConfig = promptsList.filter((q) => !config[q.name]);
-      if (missingConfig.length > 0)
+      const missingConfig = promptsList.filter(
+        (q) => config?.[q.name] === undefined || config?.[q.name] === ""
+      );
+
+      if (missingConfig.length > 0) {
         getPromptData(missingConfig).then(() => resolve());
-      else resolve();
+
+        return;
+      }
+
+      resolve();
     } else {
       getPromptData().then(() => resolve());
     }
@@ -82,61 +91,33 @@ function createOutputDirectory() {
 
 function createColorsFile(colorsObject) {
   return new Promise((resolve) => {
-    const content = `export const colors = ${JSON.stringify(
-      colorsObject,
-      null,
-      2
-    )};\n`;
-
-    fs.writeFile(
-      `${config.colorsExportDirectory}/${config.colorsExportFileName}.${
-        config.typescript ? "ts" : "js"
-      }`,
-      content,
-      (err) => {
-        if (err) throw err;
-      }
-    );
-
-    resolve();
-  });
-}
-
-function deleteFile(path) {
-  return new Promise((resolve, reject) => {
-    fs.unlink(path, (err) => {
-      if (err) {
-        throw err;
-      }
-      // if no error, file has been deleted successfully
-      resolve();
-    });
-  });
-}
-
-function deletePreviousFile() {
-  return new Promise((resolve) => {
     const directory = path.resolve(config.colorsExportDirectory);
-
     const filePath = path.join(
       directory,
       `${config.colorsExportFileName}.${config.typescript ? "ts" : "js"}`
     );
 
     if (!fs.existsSync(filePath)) {
-      console.info(chalk.cyan.bold("No colors file found."));
-
-      resolve();
-
-      return;
+      console.info(
+        chalk.cyan.bold("No previous file to found. Creating new file.")
+      );
+    } else {
+      console.info(
+        chalk.cyan.bold("Previous file to found. Overwriting file.")
+      );
     }
 
-    spinner.start("Deleting previous color file.");
+    const content = `export const colors = ${JSON.stringify(
+      colorsObject,
+      null,
+      2
+    )};\n`;
 
-    deleteFile(filePath).then(() => {
-      spinner.succeed();
-      resolve();
+    fs.writeFile(filePath, content, (err) => {
+      if (err) throw err;
     });
+
+    resolve();
   });
 }
 
@@ -281,12 +262,10 @@ function exportColors() {
     }, {});
 
     createOutputDirectory().then(() => {
-      deletePreviousFile().then(() => {
-        spinner.start("Creating colors file");
-        createColorsFile(colorsObject).then(() => {
-          makeResultsTable(colorsObject);
-          spinner.succeed(chalk.cyan.bold("Export colors done!\n"));
-        });
+      spinner.start("Creating colors file\n");
+      createColorsFile(colorsObject).then(() => {
+        makeResultsTable(colorsObject);
+        spinner.succeed(chalk.cyan.bold("Export colors done!\n"));
       });
     });
   });
