@@ -7,17 +7,21 @@ Command line script to generate a `.js` or `.ts` colors object from the generate
 
 ## Description
 
-example config file:
+example json config file:
 
-```json
+```json5
 {
   "figmaPersonalToken": "YOUR_PERSONAL_TOKEN",
   "fileId": "FILE_ID",
-  "page": "Color",
-  "frame": "Colors",
-  "exportPath": "constants/colors",
+  "colorsPage": "Colors",
+  // The frame name in Figma page. 
+  // If is nested frame, could be referenced by slashes as path (/parenFrame/firstChildFrame/colorsChildFrame)
+  "colorsFrame": "Empty or ColorFrameContainerName or ColorFrameContainerName/ChildFrame/...",
+  "colorsExportDirectory" : "./constants",
+  "colorsExportFileName" : "colors",
   "typescript": true
 }
+
 ```
 
 ## Features
@@ -71,9 +75,31 @@ run it directly with:
 npx export-colors
 ```
 
-## Example of an exported file as colors.js/ts
+## Example of an exported file as colors.js
 
 ```js
+module.exports.colors = {
+    black: "#000000",
+    white: "#ffffff",
+    yellow: {
+        50: "#fdffe7",
+        100: "#f9ffc1",
+        200: "#f8ff86",
+        // ...
+    },
+    purple: {
+        50: "#f3f3ff",
+        100: "#eae9fe",
+        200: "#d8d6fe",
+        // ...
+    },
+    // ...
+};
+```
+
+## Example of an exported file as colors.ts
+
+```ts
 export const colors = {
   black: "#000000",
   white: "#ffffff",
@@ -81,15 +107,15 @@ export const colors = {
     50: "#fdffe7",
     100: "#f9ffc1",
     200: "#f8ff86",
-    ...
+    // ...
   },
   purple: {
     50: "#f3f3ff",
     100: "#eae9fe",
     200: "#d8d6fe",
-    ...
+    // ...
   },
-  ...
+  // ...
 };
 ```
 
