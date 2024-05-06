@@ -21,11 +21,6 @@ example config file:
 }
 ```
 
-## Features
-
-- Wizard to generate config, you will be prompted for any missing key
-- WIP
-
 ## Installation
 
 Install the cli globally so you can use it on any directory
@@ -42,7 +37,9 @@ npm install -D figma-export-colors
 
 ## Usage
 
-> Make sure you wrap the colors defined in figma in a named frame that matches the name that you defined in the config as the value of the `colorsFrame` key property.
+In Figma make sure you wrap the colors defined in a named frame that matches the name that you defined in the config as the value of the `colorsFrame` key property.
+
+![usage](/images/usage.png)
 
 If you have installed the module globally:
 
