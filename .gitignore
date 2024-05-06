@@ -2,6 +2,7 @@
 .idea
 node_modules
 .env
+dist
 
 #figma-export-config
 figma-export-config.json
