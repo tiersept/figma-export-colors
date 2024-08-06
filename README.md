@@ -5,29 +5,9 @@
 
 Command line script to generate a `.js` or `.ts` colors object from the generated colors using [tailwind-css-color-generator](https://www.figma.com/community/plugin/1242548152689430610/tailwind-css-color-generator) that you can spread in your `tailwind.config` file.
 
-## Description
-
-example json config file:
-
-```json5
-{
-  "figmaPersonalToken": "YOUR_PERSONAL_TOKEN",
-  "fileId": "FILE_ID",
-  "colorsPage": "Colors",
-  // The frame name in Figma page. 
-  // If is nested frame, could be referenced by slashes as path (/parenFrame/firstChildFrame/colorsChildFrame)
-  "colorsFrame": "Empty or ColorFrameContainerName or ColorFrameContainerName/ChildFrame/...",
-  "colorsExportDirectory" : "./constants",
-  "colorsExportFileName" : "colors",
-  "typescript": true
-}
-
-```
-
 ## Features
 
-- Wizard to generate config, you will be prompted for any missing key
-- WIP
+- Export all the color variables from figma into your codebase with a single command.
 
 ## Installation
 
@@ -45,7 +25,23 @@ npm install -D figma-export-colors
 
 ## Usage
 
-> Make sure you wrap the colors defined in figma in a named frame that matches the name that you defined in the config as the value of the `colorsFrame` key property.
+Create a `figma-export-config.json` file in the root directory with the following structure
+
+```json5
+{
+  figmaPersonalToken: "YOUR_PERSONAL_TOKEN",
+  // File id can be found in the url of the figma file
+  // E.g https://www.figma.com/design/[FILE_ID]/
+  fileId: "FILE_ID",
+  colorsPage: "Colors",
+  // The frame name in Figma page.
+  // If is nested frame, could be referenced by slashes as path (/parenFrame/firstChildFrame/colorsChildFrame)
+  colorsFrame: "Empty or ColorFrameContainerName or ColorFrameContainerName/ChildFrame/...",
+  colorsExportDirectory: "./constants",
+  colorsExportFileName: "colors",
+  typescript: true,
+}
+```
 
 If you have installed the module globally:
 
@@ -81,21 +77,21 @@ npx export-colors
 
 ```js
 module.exports.colors = {
-    black: "#000000",
-    white: "#ffffff",
-    yellow: {
-        50: "#fdffe7",
-        100: "#f9ffc1",
-        200: "#f8ff86",
-        // ...
-    },
-    purple: {
-        50: "#f3f3ff",
-        100: "#eae9fe",
-        200: "#d8d6fe",
-        // ...
-    },
+  black: "#000000",
+  white: "#ffffff",
+  yellow: {
+    50: "#fdffe7",
+    100: "#f9ffc1",
+    200: "#f8ff86",
     // ...
+  },
+  purple: {
+    50: "#f3f3ff",
+    100: "#eae9fe",
+    200: "#d8d6fe",
+    // ...
+  },
+  // ...
 };
 ```
 

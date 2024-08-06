@@ -1,21 +1,21 @@
-import { RunnerFn }       from "../types/runnerFn";
-import config             from "../config";
+import { RunnerFn } from "../types/runnerFn";
+import { config } from "../config";
 import { getFigmaClient } from "../utils";
-import { BuilderConfig }  from "../types/builderConfig";
+import { BuilderConfig } from "../types/builderConfig";
 
-const checkFigmaToken : RunnerFn = async (spinner,configuration) => new Promise<BuilderConfig>(async (resolve,reject) => {
+export const checkFigmaToken: RunnerFn = async (spinner, configuration) =>
+  new Promise<BuilderConfig>(async (resolve, reject) => {
+    const client = getFigmaClient({
+      personalAccessToken: config.get("figmaPersonalToken"),
+    });
 
-    const client = getFigmaClient({personalAccessToken : config.get('figmaPersonalToken')})
-    try{
-        const user = await client.getMe();
-        configuration.user = user;
-        spinner.text = `Checked user ${user.handle} (email : ${user.email}) (id : ${user.id})`
-        spinner.render();
-        resolve(configuration)
+    try {
+      const user = await client.getMe();
+      configuration.user = user;
+      spinner.text = `Checked user ${user.handle} (email: ${user.email}) (id: ${user.id})`;
+      spinner.render();
+      resolve(configuration);
+    } catch (e) {
+      reject("Token not valid or service unavailable");
     }
-    catch (e){
-        reject("Token not valid or service unavailable")
-    }
-})
-
-export default checkFigmaToken;
+  });

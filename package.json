@@ -10,7 +10,7 @@
     "build": "npm run clean && tsc",
     "prepublishOnly": "npm run build",
     "pub": "npm version patch --force && npm publish",
-    "start": "ts-node-dev --respawn src/cli.ts"
+    "dev": "ts-node-dev --respawn src/cli.ts"
   },
   "repository": {
     "type": "git",
@@ -36,8 +36,8 @@
     "ora": "^3.4.0"
   },
   "devDependencies": {
-    "@types/lodash": "^4.17.1",
     "@types/convict": "^6.1.6",
+    "@types/lodash": "^4.17.1",
     "@types/node": "^20.12.8",
     "del-cli": "^5.1.0",
     "ts-node": "^10.9.2",
