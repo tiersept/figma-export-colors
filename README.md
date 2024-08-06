@@ -5,21 +5,9 @@
 
 Command line script to generate a `.js` or `.ts` colors object from the generated colors using [tailwind-css-color-generator](https://www.figma.com/community/plugin/1242548152689430610/tailwind-css-color-generator) that you can spread in your `tailwind.config` file.
 
-## Description
+## Features
 
-example config file:
-
-```json
-{
-  "figmaPersonalToken": "YOUR_PERSONAL_TOKEN",
-  "fileId": "FILE_ID",
-  "colorsPage": "Colors",
-  "colorsFrame": "colors",
-  "colorsExportDirectory": "constants",
-  "colorsExportFileName": "colors",
-  "typescript": true
-}
-```
+- Export all the color variables from figma into your codebase with a single command.
 
 ## Installation
 
@@ -37,9 +25,24 @@ npm install -D figma-export-colors
 
 ## Usage
 
-In Figma make sure you wrap the colors defined in a named frame that matches the name that you defined in the config as the value of the `colorsFrame` key property.
 
-![usage](/images/usage.png)
+Create a `figma-export-config.json` file in the root directory with the following structure
+
+```json5
+{
+  figmaPersonalToken: "YOUR_PERSONAL_TOKEN",
+  // File id can be found in the url of the figma file
+  // E.g https://www.figma.com/design/[FILE_ID]/
+  fileId: "FILE_ID",
+  colorsPage: "Colors",
+  // The frame name in Figma page.
+  // If is nested frame, could be referenced by slashes as path (/parenFrame/firstChildFrame/colorsChildFrame)
+  colorsFrame: "Empty or ColorFrameContainerName or ColorFrameContainerName/ChildFrame/...",
+  colorsExportDirectory: "./constants",
+  colorsExportFileName: "colors",
+  typescript: true,
+}
+```
 
 If you have installed the module globally:
 
@@ -71,9 +74,31 @@ run it directly with:
 npx export-colors
 ```
 
-## Example of an exported file as colors.js/ts
+## Example of an exported file as colors.js
 
 ```js
+module.exports.colors = {
+  black: "#000000",
+  white: "#ffffff",
+  yellow: {
+    50: "#fdffe7",
+    100: "#f9ffc1",
+    200: "#f8ff86",
+    // ...
+  },
+  purple: {
+    50: "#f3f3ff",
+    100: "#eae9fe",
+    200: "#d8d6fe",
+    // ...
+  },
+  // ...
+};
+```
+
+## Example of an exported file as colors.ts
+
+```ts
 export const colors = {
   black: "#000000",
   white: "#ffffff",
@@ -81,15 +106,15 @@ export const colors = {
     50: "#fdffe7",
     100: "#f9ffc1",
     200: "#f8ff86",
-    ...
+    // ...
   },
   purple: {
     50: "#f3f3ff",
     100: "#eae9fe",
     200: "#d8d6fe",
-    ...
+    // ...
   },
-  ...
+  // ...
 };
 ```
 
