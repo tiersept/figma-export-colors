@@ -25,6 +25,7 @@ npm install -D figma-export-colors
 
 ## Usage
 
+
 Create a `figma-export-config.json` file in the root directory with the following structure
 
 ```json5
