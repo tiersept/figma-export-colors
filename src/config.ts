@@ -49,4 +49,34 @@ export const config = convict({
     default: true,
     arg: "typescript",
   },
+
+  // Font size
+  fontSizePage: {
+    doc: "The name of the Figma page to export from",
+    format: String,
+    default: null,
+    nullable: true,
+    arg: "fontSizePage",
+  },
+  fontSizeFrames: {
+    doc: "The frame name(s) in Figma page.",
+    format: Array,
+    default: null,
+    nullable: true,
+    arg: "fontSizeFrames",
+  },
+  fontSizeExportDirectory: {
+    doc: "The path where the exported font sizes should be saved",
+    format: String,
+    default: "./constants",
+    nullable: true,
+    arg: "fontSizeExportDirectory",
+  },
+  fontSizeExportFileName: {
+    doc: "The file name where the exported font sizes should be saved",
+    format: String,
+    default: "fontSize",
+    nullable: true,
+    arg: "fontSizeExportFileName",
+  },
 });
