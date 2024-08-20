@@ -1,0 +1,16 @@
+{
+  "singleQuote": true,
+  "trailingComma": "es5",
+
+  "overrides": [
+    {
+      "files": "*.md",
+      "options": {
+        "parser": "markdown",
+        "singleQuote": false,
+        "proseWrap": "preserve",
+        "quoteProps": "preserve"
+      }
+    }
+  ]
+}

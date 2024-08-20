@@ -1,9 +1,9 @@
-import { RunnerFn } from "../types/runnerFn";
-import { config } from "../config";
-import { BuilderConfig } from "../types/builderConfig";
-import * as ora from "ora";
-import * as path from "node:path";
-import * as fs from "fs";
+import { RunnerFn } from '../types/runnerFn';
+import { config } from '../config';
+import { BuilderConfig } from '../types/builderConfig';
+import * as ora from 'ora';
+import * as path from 'node:path';
+import * as fs from 'fs';
 
 export const createColorsFile: RunnerFn = async (
   spinner: ora.Ora,
@@ -11,10 +11,10 @@ export const createColorsFile: RunnerFn = async (
 ) =>
   new Promise<BuilderConfig>(async (resolve, reject) => {
     const directory = path.resolve(
-      config.get("colorsExportDirectory") as string
+      config.get('colorsExportDirectory') as string
     );
-    const filename = path.parse(config.get("colorsExportFileName") as string);
-    const extension = config.get("typescript") ? "ts" : "js";
+    const filename = path.parse(config.get('colorsExportFileName') as string);
+    const extension = config.get('typescript') ? 'ts' : 'js';
 
     if (
       !fs.existsSync(directory) &&
@@ -25,12 +25,12 @@ export const createColorsFile: RunnerFn = async (
 
     const fullPath = path.resolve(directory, `${filename.base}.${extension}`);
     const template = {
-      ts: "export const colors = #COLORS;\n",
-      js: "module.exports.colors = #COLORS;\n",
+      ts: 'export const colors = #COLORS;\n',
+      js: 'module.exports.colors = #COLORS;\n',
     };
 
     const content = template[extension].replace(
-      "#COLORS",
+      '#COLORS',
       JSON.stringify(configuration.colors, null, 2)
     );
 

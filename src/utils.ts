@@ -1,10 +1,10 @@
-import * as ora from "ora";
-import { BuilderConfig } from "./types/builderConfig";
-import { TaskDef } from "./types/taskDef";
-import * as Figma from "figma-api";
-import { Node } from "figma-api/lib/ast-types";
-import * as _ from "lodash";
-import { isParentalNode } from "./types/parentalNode";
+import * as ora from 'ora';
+import { BuilderConfig } from './types/builderConfig';
+import { TaskDef } from './types/taskDef';
+import * as Figma from 'figma-api';
+import { Node } from 'figma-api/lib/ast-types';
+import * as _ from 'lodash';
+import { isParentalNode } from './types/parentalNode';
 
 export function createBuilder(tasks: TaskDef) {
   return async function (config: BuilderConfig) {
@@ -40,7 +40,7 @@ export const getFigmaClient = (() => {
       return figmaClient;
     }
     if (!params) {
-      throw new Error("No token provided before initialization");
+      throw new Error('No token provided before initialization');
     }
 
     return (figmaClient = new Figma.Api(params));
@@ -48,12 +48,12 @@ export const getFigmaClient = (() => {
 })();
 
 export const getNodeByPath = (
-  root: Node<"DOCUMENT" | "CANVAS" | "FRAME">,
+  root: Node<'DOCUMENT' | 'CANVAS' | 'FRAME'>,
   path: string[]
-): Node<"DOCUMENT" | "CANVAS" | "FRAME"> | undefined => {
+): Node<'DOCUMENT' | 'CANVAS' | 'FRAME'> | undefined => {
   return _.reduce(
     path,
-    (current: Node<"DOCUMENT" | "CANVAS" | "FRAME">, name: string) => {
+    (current: Node<'DOCUMENT' | 'CANVAS' | 'FRAME'>, name: string) => {
       const parentFounded = _.find(current.children, { name });
       return current && parentFounded && isParentalNode(parentFounded)
         ? parentFounded

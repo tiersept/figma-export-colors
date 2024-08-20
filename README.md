@@ -25,22 +25,21 @@ npm install -D figma-export-colors
 
 ## Usage
 
-
 Create a `figma-export-config.json` file in the root directory with the following structure
 
 ```json5
 {
-  figmaPersonalToken: "YOUR_PERSONAL_TOKEN",
+  "figmaPersonalToken": "YOUR_PERSONAL_TOKEN",
   // File id can be found in the url of the figma file
   // E.g https://www.figma.com/design/[FILE_ID]/
-  fileId: "FILE_ID",
-  colorsPage: "Colors",
+  "fileId": "FILE_ID",
+  "colorsPage": "Colors",
   // The frame name in Figma page.
   // If is nested frame, could be referenced by slashes as path (/parenFrame/firstChildFrame/colorsChildFrame)
-  colorsFrame: "Empty or ColorFrameContainerName or ColorFrameContainerName/ChildFrame/...",
-  colorsExportDirectory: "./constants",
-  colorsExportFileName: "colors",
-  typescript: true,
+  "colorsFrame": "Empty or ColorFrameContainerName or ColorFrameContainerName/ChildFrame/...",
+  "colorsExportDirectory": "./constants",
+  "colorsExportFileName": "colors",
+  "typescript": true,
 }
 ```
 

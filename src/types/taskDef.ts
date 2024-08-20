@@ -1,5 +1,5 @@
-import { RunnerFn } from "./runnerFn";
+import { RunnerFn } from './runnerFn';
 
 export type TaskDef = {
-    [task_name: string]: RunnerFn
-}
+  [task_name: string]: RunnerFn;
+};

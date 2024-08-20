@@ -1,19 +1,19 @@
-import { RunnerFn } from "../types/runnerFn";
-import { config } from "../config";
-import { getNodeByPath } from "../utils";
-import { BuilderConfig } from "../types/builderConfig";
-import * as _ from "lodash";
-import { Node } from "figma-api/lib/ast-types";
-import * as ora from "ora";
-import { isParentalNode } from "../types/parentalNode";
-import { ColorResult } from "../types/colorResult";
+import { RunnerFn } from '../types/runnerFn';
+import { config } from '../config';
+import { getNodeByPath } from '../utils';
+import { BuilderConfig } from '../types/builderConfig';
+import * as _ from 'lodash';
+import { Node } from 'figma-api/lib/ast-types';
+import * as ora from 'ora';
+import { isParentalNode } from '../types/parentalNode';
+import { ColorResult } from '../types/colorResult';
 
 const getColor = (children: Node[], isHex: boolean): string | undefined => {
   return _.find(
     children,
     (child) =>
-      child.type === "TEXT" &&
-      (isHex ? child.name.startsWith("#") : !child.name.startsWith("#"))
+      child.type === 'TEXT' &&
+      (isHex ? child.name.startsWith('#') : !child.name.startsWith('#'))
   )?.name;
 };
 
@@ -42,15 +42,15 @@ const getColorValues = (
 
 export const getColors: RunnerFn = async (spinner, configuration) =>
   new Promise<BuilderConfig>(async (resolve, reject) => {
-    const colorsFrame = config.get("colorsFrame") as string;
+    const colorsFrame = config.get('colorsFrame') as string;
 
     const paletteNodes: Node[] = colorsFrame
       ? _.get(
           getNodeByPath(
             configuration.page,
-            colorsFrame.split("/").filter(Boolean)
+            colorsFrame.split('/').filter(Boolean)
           ),
-          "children",
+          'children',
           []
         )
       : configuration.page!.children;
@@ -58,12 +58,12 @@ export const getColors: RunnerFn = async (spinner, configuration) =>
     if (colorsFrame && _.isEmpty(paletteNodes)) {
       reject(
         `Could not find frame "${colorsFrame}" in page ${config.get(
-          "colorsPage"
+          'colorsPage'
         )}`
       );
       return;
     }
-    spinner.succeed("Colors found");
+    spinner.succeed('Colors found');
 
     configuration.colors = _.reduce(
       paletteNodes,
@@ -72,7 +72,7 @@ export const getColors: RunnerFn = async (spinner, configuration) =>
 
         const colorGroupName = colorGroup.name
           .toLowerCase()
-          .replace(/\s+/g, "-");
+          .replace(/\s+/g, '-');
 
         ora({ indent: (spinner.indent || 1) * 4 })
           .start()

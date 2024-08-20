@@ -1,6 +1,6 @@
 {
   "name": "figma-export-colors",
-  "version": "0.3.13",
+  "version": "0.3.14",
   "description": "Script to generate a colors object for use in a tailwind config file from a figma.",
   "bin": {
     "export-colors": "./dist/cli.js"
@@ -10,7 +10,8 @@
     "build": "npm run clean && tsc",
     "prepublishOnly": "npm run build",
     "pub": "npm version patch --force && npm publish",
-    "dev": "ts-node-dev --respawn src/cli.ts"
+    "dev": "ts-node-dev --respawn src/cli.ts",
+    "format": "prettier --write ."
   },
   "repository": {
     "type": "git",
@@ -40,6 +41,7 @@
     "@types/lodash": "^4.17.1",
     "@types/node": "^20.12.8",
     "del-cli": "^5.1.0",
+    "prettier": "^3.3.3",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.4.5"

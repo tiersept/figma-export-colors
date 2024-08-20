@@ -1,82 +1,82 @@
-import * as convict from "convict";
+import * as convict from 'convict';
 
 export const config = convict({
   figmaPersonalToken: {
-    doc: "The Figma API personal access token",
+    doc: 'The Figma API personal access token',
     format: String,
     default: null,
     nullable: false,
-    arg: "figmaPersonalToken",
+    arg: 'figmaPersonalToken',
   },
   fileId: {
-    doc: "The fileId of the Figma page to export from",
+    doc: 'The fileId of the Figma page to export from',
     format: String,
     default: null,
     nullable: false,
-    arg: "fileId",
+    arg: 'fileId',
   },
   colorsPage: {
-    doc: "The name of the Figma page to export from",
+    doc: 'The name of the Figma page to export from',
     format: String,
     default: null,
     nullable: false,
-    arg: "colorsPage",
+    arg: 'colorsPage',
   },
   colorsFrame: {
     doc:
-      "The frame name in Figma page. " +
-      "If is nested frame, could be referenced by slashes as path (/parentFrame/firstChildFrame/colorsChildFrame)",
+      'The frame name in Figma page. ' +
+      'If is nested frame, could be referenced by slashes as path (/parentFrame/firstChildFrame/colorsChildFrame)',
     format: String,
     default: null,
     nullable: true,
-    arg: "colorsFrame",
+    arg: 'colorsFrame',
   },
   colorsExportDirectory: {
-    doc: "The path where the exported colors should be saved",
+    doc: 'The path where the exported colors should be saved',
     format: String,
-    default: "./constants",
-    arg: "colorsExportDirectory",
+    default: './constants',
+    arg: 'colorsExportDirectory',
   },
   colorsExportFileName: {
-    doc: "The file name where the exported colors should be saved",
+    doc: 'The file name where the exported colors should be saved',
     format: String,
-    default: "colors",
-    arg: "colorsExportFileName",
+    default: 'colors',
+    arg: 'colorsExportFileName',
   },
   typescript: {
-    doc: "Whether to output TypeScript files",
+    doc: 'Whether to output TypeScript files',
     format: Boolean,
     default: true,
-    arg: "typescript",
+    arg: 'typescript',
   },
 
   // Font size
   fontSizePage: {
-    doc: "The name of the Figma page to export from",
+    doc: 'The name of the Figma page to export from',
     format: String,
     default: null,
     nullable: true,
-    arg: "fontSizePage",
+    arg: 'fontSizePage',
   },
   fontSizeFrames: {
-    doc: "The frame name(s) in Figma page.",
+    doc: 'The frame name(s) in Figma page.',
     format: Array,
     default: null,
     nullable: true,
-    arg: "fontSizeFrames",
+    arg: 'fontSizeFrames',
   },
   fontSizeExportDirectory: {
-    doc: "The path where the exported font sizes should be saved",
+    doc: 'The path where the exported font sizes should be saved',
     format: String,
-    default: "./constants",
+    default: './constants',
     nullable: true,
-    arg: "fontSizeExportDirectory",
+    arg: 'fontSizeExportDirectory',
   },
   fontSizeExportFileName: {
-    doc: "The file name where the exported font sizes should be saved",
+    doc: 'The file name where the exported font sizes should be saved',
     format: String,
-    default: "fontSize",
+    default: 'fontSize',
     nullable: true,
-    arg: "fontSizeExportFileName",
+    arg: 'fontSizeExportFileName',
   },
 });
